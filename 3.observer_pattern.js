@@ -14,52 +14,63 @@
 // https://en.wikipedia.org/wiki/Observer_pattern
 
 function Subject() {
-    this.subscribers = new Map();
-    this.subscribe = (key, subscriber) => {
-        this.subscribers.set(key, subscriber);
+    // our subject keeps a record of its subscribers
+    this.subscribers = new Set();
+    // clients can can subscribe to it
+    this.subscribe = (subscriber) => {
+        this.subscribers.add(subscriber);
+        // provite the ability to unsubscribe
+        return {
+            unsubscribe: () => this.subscribers.delete(subscriber)
+        };
     };
-    this.unsubscribe = (key) => {
-        this.subscribers.delete(key);
-    }
+    // our subject can emit values to each subscriber
     this.next = (value) => {
-        for (const subscriber of this.subscribers.values()) {
-            subscriber(value);
-        }
+        this.subscribers.forEach(subscriber => subscriber(value));
     }
 }
 
-// let's create a messenger
+// how does this behave on a timeline?
+// let's use a messenger
 const messenger = new Subject();
 // and our first client connects
-const clientA = [];
-messenger.subscribe("a", message => clientA.push(message));
+const clientA = {
+    messages: [],
+    connection:
+        messenger.subscribe(message => clientA.messages.push(message))
+};
+
 // some messages are sent
 messenger.next("A");
 messenger.next("B");
 
 // our 2nd client connects
-const clientB = [];
-messenger.subscribe("b", message => clientB.push(message));
+const clientB = {
+    messages: [],
+    connection:
+        messenger.subscribe(message => clientB.messages.push(message))
+};
+
 // and more messages are sent
 messenger.next("C");
 messenger.next("D");
 
 // thus our clients have so far received
-clientA
-clientB
+console.log(clientA.messages);
+console.log(clientB.messages);
 
-// and unsubscribing the first client
-messenger.unsubscribe("a");
+// our first client disconnects
+clientA.connection.unsubscribe();
 messenger.next("E");
 messenger.next("F");
 
 // will only update the second client from now on
-clientA
-clientB
-
+console.log(clientA.messages);
+console.log(clientB.messages);
 
 // this is an example of a 'push' collection
-// the subscriber cannot subscribe and unsubscribe
+// the subscriber can subscribe and unsubscribe to the output
+
 // but is not provided with tools to manipulate the stream
 
 // next: Reactive Extensions

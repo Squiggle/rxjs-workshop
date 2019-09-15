@@ -5,7 +5,7 @@
 
 // like before, let's start with a subject
 // but this one is supplied by Reactive Extensions
-import { Subject, BehaviorSubject } from "rxjs";
+import { Subject } from "rxjs";
 
 const numbers = new Subject();
 
@@ -36,7 +36,7 @@ total2;
 // e.g. BehaviourSubject
 // must always have a value, and will
 // provide its latest value whenever it is subscribed to
-
+import { BehaviorSubject } from "rxjs";
 const names = new BehaviorSubject("Amy");
 
 const namesA = [];
@@ -57,6 +57,7 @@ names.subscribe(n => namesB.push(n));
 namesB;
 
 // when is BehaviourSubject useful?
-// "What time is it?" - will always provide the latest time
-// to any new subscribers, even before the next second passes
 
+// e.g. "What time is it?"
+// A BehaviourSubject that emits the time each second
+// will always provide the latest time immediately on subscription
