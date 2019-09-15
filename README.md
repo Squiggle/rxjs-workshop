@@ -21,3 +21,10 @@ Recommended:
 1. Later in the workshop you will be prompted to run various npm commands
 
 > If using Quokka, you should see interactive feedback in each file. If you don't see this, use VS Code command 'Quokka: Start on current file' or keyboard shortcut `Ctrl+K, Q`.
+
+## About
+
+This guide expects the use of Quokka to visualise interactive JavaScript for the first few sections.
+
+Later in the guide we provide interactive examples build with HTML.
+The JavaScript examples and RxJS dependencies are bundled using rollup. 
