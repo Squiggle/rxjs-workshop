@@ -82,7 +82,7 @@ function alphabetIterator() {
         }
         return { done: true };
     };
-    // 2. an iterator must have a of Symbol.iterator
+    // 2. an iterator must have property a of Symbol.iterator
     // which returns the a function to fetch its self
     this[Symbol.iterator] = () => this;
 }
