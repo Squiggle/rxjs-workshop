@@ -12,7 +12,6 @@ function bundleFor(input, output) {
             file: output,
             format: "cjs"
         },
-        sourceMap: true,
         plugins: [
             // resolve dependencies from node_modules
             resolve({
