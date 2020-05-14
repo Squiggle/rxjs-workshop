@@ -28,6 +28,14 @@ const numbers2 = generateNumbers();
 // ...we can't see them all at the same time
 numbers2;
 
+numbers2.next();
+numbers2.next();
+numbers2.next();
+numbers2.next();
+numbers2.next();
+const x = numbers2.next();
+x;
+
 // but we can iterate over them
 function getTotal(numbersIterable) {
     let total = 0;
@@ -72,13 +80,16 @@ f;
 
 // how hard is it to implement our own generator?
 function alphabetIterator() {
-    this._i = 65;
-    this._x = 65 + 26;
+    this._i = 65; // start at 'A'
+    this._x = 65 + 26; // end at 'X'
     // 1. an iterator must have a next() method
     // which returns { value: any, done: boolean }
     this.next = () => {
         if (this._i < this._x) {
-            return { value: String.fromCharCode(this._i++), done: false };
+            return {
+                value: String.fromCharCode(this._i++),
+                done: false
+            };
         }
         return { done: true };
     };

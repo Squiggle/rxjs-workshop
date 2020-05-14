@@ -32,41 +32,30 @@ function Subject() {
 
 // how does this behave on a timeline?
 // let's use a messenger
-const messenger = new Subject();
+const doorEntry = new Subject();
 // and our first client connects
-const clientA = {
-    messages: [],
-    connection:
-        messenger.subscribe(message => clientA.messages.push(message))
-};
+
+const observer1 = doorEntry.subscribe(x => console.log(`1: ${x}`));
 
 // some messages are sent
-messenger.next("A");
-messenger.next("B");
+doorEntry.next("Alexis");
+doorEntry.next("Barry");
 
 // our 2nd client connects
-const clientB = {
-    messages: [],
-    connection:
-        messenger.subscribe(message => clientB.messages.push(message))
-};
+const observer2 = doorEntry.subscribe(x => console.log(`2: ${x}`));
+
 
 // and more messages are sent
-messenger.next("C");
-messenger.next("D");
-
-// thus our clients have so far received
-console.log(clientA.messages);
-console.log(clientB.messages);
+doorEntry.next("Cathy");
+doorEntry.next("Deepak");
 
 // our first client disconnects
-clientA.connection.unsubscribe();
-messenger.next("E");
-messenger.next("F");
+observer1.unsubscribe();
+doorEntry.next("Edwin");
+doorEntry.next("Frances");
 
 // will only update the second client from now on
-console.log(clientA.messages);
-console.log(clientB.messages);
+
 
 // this is an example of a 'push' collection
 // the subscriber can subscribe and unsubscribe to the output

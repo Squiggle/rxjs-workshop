@@ -4,6 +4,7 @@
 
 // we all know what an array looks like
 const numbers = [1, 2, 3, 4];
+
 numbers;
 
 // an in-memory collection of values or objects

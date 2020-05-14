@@ -41,7 +41,9 @@ const records = from([70, 74, 74, 86, 105, 120, 131, 112, 101, 119, 135, 100]);
 records
     .pipe(filter(heartrate => heartrate > 130))
     .pipe(skip(1)) // ignore the first match
-    .subscribe((heartrate) => console.log(`Heart rate exceeded limit at ${heartrate}bpm`));
+    .subscribe((heartrate) => {
+        console.log(`Heart rate exceeded limit at ${heartrate}bpm`);
+    });
 // the console output will log the 2nd value - 135bpm
 
 // here we have seen how an observable's pipe method
@@ -52,3 +54,9 @@ records
 // keep a record of the latest 3 values and provide a warning when
 // the heartrate is above 110bpm for three consecutive records
 // hint: you can fetch the last 3 values of an array using .slice(-3)
+import { scan } from "rxjs/operators";
+records
+    .pipe(scan((accumulator, seed) => accumulator.slice(-3)))
+    .subscribe(rate => {
+        console.log(rate);
+    });

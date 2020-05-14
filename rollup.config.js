@@ -27,5 +27,6 @@ function bundleFor(input, output) {
 // one for each interactive sheet
 export default [
     bundleFor("7.rxjs_realtime.js", "7/bundle.js"),
-    bundleFor("8.rxjs_combining_observables.js", "8/bundle.js")
+    bundleFor("8.rxjs_combining_observables.js", "8/bundle.js"),
+    bundleFor("9.rxjs_websockets.js", "9/bundle.js")
 ];
