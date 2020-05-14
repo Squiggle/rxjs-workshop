@@ -12,7 +12,7 @@ if (!apiKey) {
 }
 
 //
-// create an active observable from our websocket
+// create a subject from our websocket
 // start subscribing to our chosen stocks
 //
 const subject = webSocket(`wss://ws.finnhub.io/?token=${apiKey}`);
@@ -27,22 +27,23 @@ const btc = subject.multiplex(
   message => message.type === "trade" && message.data.some(d => d.s === "BINANCE:BTCUSDT")
 );
 
-// log all our messages
-const allPricesElement = document.getElementById("log");
+// websocket data provides multiple trades in each message
+// reduce these into individual emits - once per trade
+const individualBtcTrades = btc
+  .pipe(map(x => from(x.data)))
+  .pipe(mergeAll())
 
-// all latest BTC trades, flattened to one trade per emit
-const individualBtcTrades = btc.pipe(map(x => from(x.data))).pipe(mergeAll())
-
-// time interval for buffering
+// provide a time interval for buffering
 const tick = interval(2000);
 
 // buffer all trades over the last 2 seconds
-individualBtcTrades.pipe(buffer(tick))
+individualBtcTrades
+  .pipe(buffer(tick))
   .subscribe(trades => {
+    // array of prices
     const prices = trades.map(t => t.p);
-    allPricesElement.innerText = prices.join("\r\n");
-    rollingAverage.innerText = prices.reduce((a, b) => a + b, 0) / prices.length;
+    // the price of all trades in the last 2 seconds
+    allPrices.innerText = prices.join("\r\n");
+    // calculate and display the rolling average
+    rollingAverage.innerText = (prices.reduce((a, b) => a + b, 0) / prices.length).toFixed(2);
   });
-
-
-// 
