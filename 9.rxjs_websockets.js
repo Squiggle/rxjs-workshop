@@ -31,7 +31,7 @@ const btc = subject.multiplex(
 // reduce these into individual emits - once per trade
 const individualBtcTrades = btc
   .pipe(map(x => from(x.data)))
-  .pipe(mergeAll())
+  .pipe(mergeAll());
 
 // provide a time interval for buffering
 const tick = interval(2000);
